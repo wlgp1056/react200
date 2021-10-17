@@ -286,6 +286,7 @@ app.route("/photo_upload_ajax").post(upload.array("photo", 1), (req, res) => {
       console.log("추가된 데이터 없슴!");
     }
     // 목록을 React에 전송한다.
+    // ㅇ
   
   });
   
