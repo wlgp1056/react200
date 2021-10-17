@@ -101,7 +101,6 @@ const List = () => {
       const {
         currentTarget: { result },
       } = progressEvent;
-      // 파일보여줄려고
       setAttachment(result);
     };
     reader.readAsDataURL(files[0]);
@@ -139,7 +138,6 @@ const List = () => {
         />
         <br />
         파일 <input type="file" name="photo" onChange={onFileChange}/>
-        파일 : <input type="file" name="uploadFile" onChange={onFileChange} />
         <input type="submit" value="저장" />
       </form>
       <table border="1px" width="100%">

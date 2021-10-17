@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        <input type="text" name="a" value="20">
+        <input type="text" name="b" value="5">
+        <select name="op" id="">
+            <option value="plus">+</option>
+            <option value="minus">-</option>
+            <option value="mult">*</option>
+            <option value="div">/</option>
+        </select>
+        <input type="submit" value="result">
+    </form>
+    <div id="result"></div>
+
+    <script>
+        var form = document.forms[0];
+        form.onsubmit = function() {
+            event.preventDefault();
+
+            var op = this.op.value;
+            var a = this.a.value;
+            var b = this.b.value;
+            var url = `http://localhost:8880/${op}/${a}/${b}`;
+            var xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function() {
+                if(this.status == 200 && this.readyState == 4) {
+                    document.getElementById("result").innerHTML = this.responseText;
+                }
+            }
+
+            xhr.open("GET", url, true);
+            xhr.send();
+        }
+    </script>
+</body>
+</html>

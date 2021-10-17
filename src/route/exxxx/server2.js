@@ -17,7 +17,7 @@ const expressSession = require("express-session");
 const static =require("serve-static");
 //path설정
 const path = require("path");
-app.use("/uploads", static(path.join(__dirname, "public/uploads"))); //현재 디렉토리, 폴더를 url처럼 만들어줌 
+app.use("/uploads", static(path.join(__dirname, "uploads"))); //현재 디렉토리, 폴더를 url처럼 만들어줌 
 
 //쿠키세션 사용
 app.use(cookieParser());
@@ -30,7 +30,7 @@ app.use(expressSession({
 //멀터 미들웨어 사용
 let storage = multer.diskStorage({
     destination: function(req, file, callback){
-      callback(null, "public/uploads");
+    callback(null, "uploads");
   },
   filename: function(req, file, callback){
     callback(null, Date.now()+"_"+file.originalname); //혹은 uuid 모듈..
@@ -232,6 +232,21 @@ app.route("/photo_upload").post(upload.array("photo",1),(req,res)=>{//포토라�
 });
 
 
+app.get("/search",(req,res)=>{
+  console.log("검색")
+  let member = {
+    name: req.body.name,
+    message: req.body.message,
+  };
+
+    var mysort = { name: req.body.name  };
+    db.collection("customers").find().sort(mysort).toArray(function(err, result) {
+      if (err) throw err;
+      console.log(result);
+      db.close();
+    });
+    sendList(req, res);
+});
 // ajax버전
 app.route("/photo_upload_ajax").post(upload.array("photo", 1), (req, res) => {
   console.log("POST - /photo_upload 요청 들어 옴 ...");
@@ -270,7 +285,6 @@ app.route("/photo_upload_ajax").post(upload.array("photo", 1), (req, res) => {
       size = files[index].size;
     } // end  of  if~else
     //DB에 넣기
-
     let users = db.collection("users");
     let inputData2={
       name:req.body.name,
